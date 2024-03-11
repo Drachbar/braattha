@@ -1,11 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <script src="js/myscript.js"></script>
+    <style>
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px; /* Justerar avståndet mellan kolumner och rader */
+            width: 500px;
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Tidsuträkning</h1>
+    <section class="grid">
+      <section>
+        <h2>Måndag</h2>
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+      </section>
+
+      <section>
+        <h2>Tisdag</h2>
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+      </section>
+
+      <section>
+        <h2>Onsdag</h2>
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+      </section>
+
+      <section>
+        <h2>Torsdag</h2>
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+      </section>
+
+      <section>
+        <h2>Fredag</h2>
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+        <input type="time" />
+      </section>
+    </section>
+  </body>
 </html>
