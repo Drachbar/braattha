@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        input {
+            height: 2rem;
+            width: 3rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .rem, .px {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            grid-column: 1 / span 3;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Rem To PX</h1>
+    <div class="container">
+        <div class="rem">
+            <h2>REM</h2>
+            <button data-field="rem" class="decrement">-</button>
+            <input type="number" id="rem" value="1">
+            <button data-field="rem" class="increment">+</button>
+        </div>
+        <div class="px">
+            <h2>PX</h2>
+            <button data-field="px" class="decrement">-</button>
+            <input type="number" id="px" value="16">
+            <button data-field="px" class="increment">+</button>
+        </div>
+    </div>
+    <script>
+        const remInput = document.getElementById('rem')
+        const pxInput = document.getElementById('px')
+        const incrementButtons = document.querySelectorAll('.increment');
+        const decrementButtons = document.querySelectorAll('.decrement');
+
+        remInput.addEventListener('input', updatePX)
+        pxInput.addEventListener('input', updateRem)
+
+        incrementButtons.forEach(button => {
+            button.addEventListener('click', changeValue);
+        });
+
+        decrementButtons.forEach(button => {
+            button.addEventListener('click', changeValue);
+        });
+
+        function changeValue(event) {
+            const field = event.target.getAttribute('data-field');
+            const input = document.getElementById(field);
+            const step = event.target.classList.contains('increment') ? 1 : -1;
+            input.value = parseInt(input.value, 10) + step;
+            field === 'rem' ? updatePX() : updateRem();
+        }
+
+        function updatePX() {
+            const remInput = document.getElementById('rem');
+            const pxInput = document.getElementById('px');
+            pxInput.value = remInput.value * 16;
+        }
+
+        function updateRem() {
+            const remInput = document.getElementById('rem');
+            const pxInput = document.getElementById('px');
+            remInput.value = pxInput.value / 16;
+        }
+    </script>
+</body>
+</html>
