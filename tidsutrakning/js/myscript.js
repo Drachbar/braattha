@@ -19,10 +19,9 @@ function addTable() {
     addTableInputListeners(inputFields);
 
     const weekHeading = document.createElement('h2');
-    weekHeading.innerText = "Vecka " + weekNumberInput.value;
+    weekHeading.innerText = "Vecka " + weekNumberInput.value++;
     weekHeading.classList.add('week-title')
     tabell.insertBefore(weekHeading, tabell.firstChild);
-    weekNumberInput.value++;
 }
 
 function addTableInputListeners(inputFields) {
