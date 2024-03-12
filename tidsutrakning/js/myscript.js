@@ -22,6 +22,7 @@ function addTable() {
     weekHeading.innerText = "Vecka " + weekNumberInput.value;
     weekHeading.classList.add('week-title')
     tabell.insertBefore(weekHeading, tabell.firstChild);
+    weekNumberInput.value++;
 }
 
 function addTableInputListeners(inputFields) {
