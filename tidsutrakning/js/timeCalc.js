@@ -15,6 +15,22 @@ function calculateTime(inputField) {
     const adjustedTime = adjustTime(totalHours, totalMinutes);
     sumElement.innerHTML = `${adjustedTime.hours}h ${adjustedTime.minutes}m`;
     sumNumberElement.innerHTML = round(adjustedTime.hours + adjustedTime.minutes/60);
+
+
+}
+
+function calculateWeekTime(inputField) {
+    const gridSection = inputField.parentElement.parentElement;
+    const daySumElements = gridSection.querySelectorAll('.sum-number');
+    const sumSection = gridSection.parentElement.querySelector('.sum-section')
+    const sumElement = sumSection.querySelector('.sum');
+
+    const sum = Array.from(daySumElements).reduce((acc, myElement) => {
+        const value = parseFloat(myElement.innerText);
+        return !isNaN(value) ? acc + value : acc;
+    }, 0)
+
+    if (sum !== 0) sumElement.innerText = sum;
 }
 
 function elementsHasEmptyValue(elements) {

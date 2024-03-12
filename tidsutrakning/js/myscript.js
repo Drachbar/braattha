@@ -26,5 +26,6 @@ function addTable() {
 
 function addTableInputListeners(inputFields) {
     onInputChange(inputFields, calculateTime);
+    onInputChange(inputFields, calculateWeekTime);
     setEnterAsTab(inputFields);
 }

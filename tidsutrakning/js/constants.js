@@ -51,5 +51,8 @@ const tabellTemplate = `
             <p class="sum-number"></p>
             </section>
     </section>
+    <section class="sum-section">
+        <p class="sum"></p>
+    </section>
 </section>
 `
