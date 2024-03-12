@@ -3,8 +3,7 @@ function getParentsChildren(element) {
     return Array.prototype.slice.call(parent.children);
 }
 
-function setEnterAsTab() {
-    const inputFields = document.querySelectorAll('input[type="time"]');
+function setEnterAsTab(inputFields) {
     inputFields.forEach(input => {
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
