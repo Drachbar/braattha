@@ -16,3 +16,13 @@ function setEnterAsTab(inputFields) {
         });
     });
 }
+
+function onInputChange(inputFields, callback) {
+    inputFields.forEach(inputField => {
+        inputField.addEventListener('input', function(event) {
+            if (event.target.tagName === 'INPUT') {
+                callback(event.target);
+            }
+        });
+    });
+}

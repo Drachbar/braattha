@@ -1,18 +1,28 @@
 function calculateTime(inputField) {
     const siblings = getParentsChildren(inputField);
     const inputFields = Array.from(siblings).filter(element => element.tagName === 'INPUT');        
+    const sumElement = siblings.find(element => element.classList.contains('sum'));
+    const sumNumberElement = siblings.find(element => element.classList.contains('sum-number'));
 
-    if (inputFields.every(element => element.value !== "")) {
-        const [start, lunchIn, lunchOut, end] = inputFields.map(input => new Date(`1970-01-01T${input.value}Z`).getTime());
-        const morningDuration = calculateDuration(start, lunchIn);
-        const afternoonDuration = calculateDuration(lunchOut, end);
+    if (elementsHasEmptyValue(inputFields)) return;
 
-        const totalHours = morningDuration.hours + afternoonDuration.hours;
-        const totalMinutes = morningDuration.minutes + afternoonDuration.minutes;
-        const adjustedTime = adjustTime(totalHours, totalMinutes);
-        const sumElement = siblings.find(element => element.classList.contains('sum'));
-        sumElement.innerHTML = `Tidsspann: ${adjustedTime.hours} timmar och ${adjustedTime.minutes} minuter`;
-    }
+    const [start, lunchIn, lunchOut, end] = inputFields.map(input => new Date(`1970-01-01T${input.value}Z`).getTime());
+    const morningDuration = calculateDuration(start, lunchIn);
+    const afternoonDuration = calculateDuration(lunchOut, end);
+
+    const totalHours = morningDuration.hours + afternoonDuration.hours;
+    const totalMinutes = morningDuration.minutes + afternoonDuration.minutes;
+    const adjustedTime = adjustTime(totalHours, totalMinutes);
+    sumElement.innerHTML = `${adjustedTime.hours}h ${adjustedTime.minutes}m`;
+    sumNumberElement.innerHTML = round(adjustedTime.hours + adjustedTime.minutes/60);
+}
+
+function elementsHasEmptyValue(elements) {
+    return elements.some(element => element.value === "")
+}
+
+function round(number) {
+    return Math.round((number + Number.EPSILON) * 100) / 100
 }
 
 function calculateDuration(startTime, endTime) {
@@ -20,16 +30,6 @@ function calculateDuration(startTime, endTime) {
     const hours = Math.floor(duration / (1000 * 60 * 60));
     const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
     return { hours, minutes };
-}
-
-function onInputChange(inputFields, callback) {
-    inputFields.forEach(inputField => {
-        inputField.addEventListener('input', function(event) {
-            if (event.target.tagName === 'INPUT') {
-                callback(event.target);
-            }
-        });
-    });
 }
 
 function adjustTime(hours, minutes) {
