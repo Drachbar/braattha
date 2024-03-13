@@ -24,8 +24,28 @@ function addTable() {
     tabell.insertBefore(weekHeading, tabell.firstChild);
 }
 
+function saveWeekTablesToLocalStorage() {
+    const tables = document.querySelectorAll('.week-table');
+
+    const savedTables = Array.from(tables).map(table => {
+        const weekNumber = table.querySelector('.week-title').textContent.slice(6);
+        const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+
+        const savedDays = daysOfWeek.reduce((saved, day) => {
+            const inputs = table.querySelectorAll(`.${day} input[type="time"]`);
+            const times = Array.from(inputs).map(input => input.value);
+            return {...saved, [day]: times};
+        }, {});
+
+        return { week: weekNumber, ...savedDays };
+    });
+
+    localStorage.setItem('savedWeeks', JSON.stringify({tables: savedTables}));
+}
+
 function addTableInputListeners(inputFields) {
     onInputChange(inputFields, calculateTime);
     onInputChange(inputFields, calculateWeekTime);
+    onInputChange(inputFields, saveWeekTablesToLocalStorage);
     setEnterAsTab(inputFields);
 }
