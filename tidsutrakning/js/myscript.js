@@ -1,13 +1,18 @@
 document.addEventListener("DOMContentLoaded", (event) => {
+    loadWeekTablesFromLocalStorage();
     const inputFields = Array.from(document.querySelectorAll('.week-table'))
         .flatMap(element => Array.from(element.querySelectorAll('input[type="time"]')));
+        
+    inputFields.forEach(calculateTime);
+    inputFields.forEach(calculateWeekTime);
     const button = document.querySelector('button');
     const weekNumberInput = document.querySelector('.week-number')
 
     button.addEventListener('click', addTable);
     addTableInputListeners(inputFields);
 
-    weekNumberInput.value = getWeekNumber(new Date());
+    const latestWeekTitle = document.querySelector('.week-title');
+    weekNumberInput.value = latestWeekTitle ? parseInt(latestWeekTitle.innerText.slice(6)) + 1 : getWeekNumber(new Date());
 });
 
 function addTable() {
@@ -22,6 +27,66 @@ function addTable() {
     weekHeading.innerText = "Vecka " + weekNumberInput.value++;
     weekHeading.classList.add('week-title')
     tabell.insertBefore(weekHeading, tabell.firstChild);
+}
+
+function loadWeekTablesFromLocalStorage() {
+    renderWeekTables();
+}
+
+function createDayHtml(dayName, times) {
+    const dayNamesSwedish = {
+        monday: 'Måndag',
+        tuesday: 'Tisdag',
+        wednesday: 'Onsdag',
+        thursday: 'Torsdag',
+        friday: 'Fredag'
+    };
+
+    const dayNameSwedish = dayNamesSwedish[dayName];
+
+    const dayHtml = `<section class="${dayName}">
+        <h3>${dayNameSwedish}</h3>
+        ${times.map(time => `<input type="time" value="${time}" />`).join('')}
+        <p class="sum"></p>
+        <p class="sum-number"></p>
+    </section>`;
+
+    return dayHtml;
+}
+
+function renderWeekTables() {
+    const savedWeekTables = JSON.parse(localStorage.getItem('savedWeeks'));
+
+    if (!savedWeekTables) return;
+    
+    savedWeekTables.tables.forEach(week => {
+        const weekContainer = document.createElement('section');
+        weekContainer.className = 'week-table';
+
+        const weekNumber = document.createElement('h2');
+        weekNumber.classList.add('week-title')
+        weekNumber.innerText = "Vecka " + week.week;
+
+        const gridSection = document.createElement('section');
+        gridSection.className = 'grid';
+        
+        Object.keys(week).forEach(day => {
+            if (day === 'week') return;
+            const dayHtml = createDayHtml(day, week[day]);
+            gridSection.innerHTML += dayHtml;
+        });
+
+        weekContainer.appendChild(gridSection);
+
+        const sumSection = document.createElement('section');
+        sumSection.className = 'sum-section';
+        sumSection.innerHTML = '<p class="sum"></p>';
+        weekContainer.appendChild(sumSection);
+        weekContainer.prepend(weekNumber);
+        
+        document.body.appendChild(weekContainer);
+    });
+
 }
 
 function saveWeekTablesToLocalStorage() {
