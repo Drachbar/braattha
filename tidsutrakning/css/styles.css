@@ -12,9 +12,18 @@ h2 {
   font-size: 1.25rem;
 }
 
+.week-tables {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+}
+
+.grid section input {
+  display: block;
 }
 
 .week-table {
@@ -22,7 +31,8 @@ h2 {
   padding: 1rem;
   border: 3px solid rgb(18, 27, 27);;
   border-radius: 1rem;
-  width: 400px;
+  flex-basis: 400px;
+  flex-grow: 1;
 }
 
 .week-title {

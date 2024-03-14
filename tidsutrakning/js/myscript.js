@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 function addTable() {
+    const weekTablesSection = document.querySelector('.week-tables');
     const weekNumberInput = document.querySelector('.week-number')
     weekNumberInput.insertAdjacentHTML('afterend', tabellTemplate)
     const tabell = document.querySelector('.ny-tabell-ta-bort')
@@ -29,7 +30,8 @@ function addTable() {
     weekHeading.innerText = "Vecka " + weekNumberInput.value++;
     weekHeading.classList.add('week-title')
     tabell.prepend(removeButton);
-    tabell.insertBefore(weekHeading, tabell.firstChild);
+    tabell.prepend(weekHeading);
+    weekTablesSection.prepend(tabell)
 }
 
 function loadWeekTablesFromLocalStorage() {
@@ -58,6 +60,7 @@ function createDayHtml(dayName, times) {
 }
 
 function renderWeekTables() {
+    const weekTablesSection = document.querySelector('.week-tables');
     const savedWeekTables = JSON.parse(localStorage.getItem('savedWeeks'));
 
     if (!savedWeekTables) return;
@@ -81,16 +84,15 @@ function renderWeekTables() {
             gridSection.innerHTML += dayHtml;
         });
 
-        weekContainer.appendChild(gridSection);
-
         const sumSection = document.createElement('section');
         sumSection.className = 'sum-section';
         sumSection.innerHTML = '<p class="sum"></p>';
+        weekContainer.appendChild(weekNumber);
+        weekContainer.appendChild(removeButton);
+        weekContainer.appendChild(gridSection);
         weekContainer.appendChild(sumSection);
-        weekContainer.prepend(removeButton);
-        weekContainer.prepend(weekNumber);
         
-        document.body.appendChild(weekContainer);
+        weekTablesSection.appendChild(weekContainer);
     });
 }
 
