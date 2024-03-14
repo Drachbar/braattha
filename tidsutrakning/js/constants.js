@@ -53,6 +53,7 @@ const tabellTemplate = `
     </section>
     <section class="sum-section">
         <p class="sum"></p>
+        <p class="flex"></p>
     </section>
 </section>
 `

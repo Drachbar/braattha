@@ -86,7 +86,10 @@ function renderWeekTables() {
 
         const sumSection = document.createElement('section');
         sumSection.className = 'sum-section';
-        sumSection.innerHTML = '<p class="sum"></p>';
+        sumSection.innerHTML = `
+        <p class="sum"></p>
+        <p class="flex"></p>
+        `;
         weekContainer.appendChild(weekNumber);
         weekContainer.appendChild(removeButton);
         weekContainer.appendChild(gridSection);

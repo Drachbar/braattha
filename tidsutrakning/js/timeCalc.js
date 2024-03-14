@@ -15,8 +15,6 @@ function calculateTime(inputField) {
     const adjustedTime = adjustTime(totalHours, totalMinutes);
     sumElement.innerHTML = `${adjustedTime.hours}h ${adjustedTime.minutes}m`;
     sumNumberElement.innerHTML = round(adjustedTime.hours + adjustedTime.minutes/60);
-
-
 }
 
 function calculateWeekTime(inputField) {
@@ -24,6 +22,7 @@ function calculateWeekTime(inputField) {
     const daySumElements = gridSection.querySelectorAll('.sum-number');
     const sumSection = gridSection.parentElement.querySelector('.sum-section')
     const sumElement = sumSection.querySelector('.sum');
+    const flexElement = sumSection.querySelector('.flex');
 
     const sum = Array.from(daySumElements).reduce((acc, myElement) => {
         const value = parseFloat(myElement.innerText);
@@ -31,6 +30,11 @@ function calculateWeekTime(inputField) {
     }, 0)
 
     if (sum !== 0) sumElement.innerText = "Summa: " + sum;
+    flexElement.innerText = "Flex: " + (sum - 40)
+}
+
+function calculateFlex() {
+
 }
 
 function elementsHasEmptyValue(elements) {
