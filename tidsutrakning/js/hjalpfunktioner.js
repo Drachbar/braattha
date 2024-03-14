@@ -26,3 +26,8 @@ function onInputChange(inputFields, callback) {
         });
     });
 }
+
+function removeParentDiv(event) {
+    var button = event.target;
+    button.parentNode.remove();
+}

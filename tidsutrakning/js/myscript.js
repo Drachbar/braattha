@@ -22,10 +22,12 @@ function addTable() {
     tabell.classList.remove('ny-tabell-ta-bort')
     const inputFields = tabell.querySelectorAll('input[type="time"]');
     addTableInputListeners(inputFields);
+    const removeButton = createRemoveButton();
 
     const weekHeading = document.createElement('h2');
     weekHeading.innerText = "Vecka " + weekNumberInput.value++;
     weekHeading.classList.add('week-title')
+    tabell.prepend(removeButton);
     tabell.insertBefore(weekHeading, tabell.firstChild);
 }
 
@@ -67,6 +69,8 @@ function renderWeekTables() {
         weekNumber.classList.add('week-title')
         weekNumber.innerText = "Vecka " + week.week;
 
+        const removeButton = createRemoveButton();
+
         const gridSection = document.createElement('section');
         gridSection.className = 'grid';
         
@@ -82,11 +86,20 @@ function renderWeekTables() {
         sumSection.className = 'sum-section';
         sumSection.innerHTML = '<p class="sum"></p>';
         weekContainer.appendChild(sumSection);
+        weekContainer.prepend(removeButton);
         weekContainer.prepend(weekNumber);
         
         document.body.appendChild(weekContainer);
     });
+}
 
+function createRemoveButton() {
+    const removeButton = document.createElement('button');
+    removeButton.innerText = "Ta bort vecka"
+    removeButton.classList.add('remove-week-btn')
+    removeButton.addEventListener('click', removeParentDiv);
+
+    return removeButton;
 }
 
 function saveWeekTablesToLocalStorage() {
