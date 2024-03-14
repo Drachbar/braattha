@@ -9,29 +9,83 @@ document.addEventListener("DOMContentLoaded", (event) => {
     button.classList.add('button-17')
     const weekNumberInput = document.querySelector('.week-number')
 
-    button.addEventListener('click', addTable);
+    button.addEventListener('click', () => addTableToWeekTableSection(getFullWeekTable(), weekNumberInput.value++));
     addTableInputListeners(inputFields);
 
     const latestWeekTitle = document.querySelector('.week-title');
     weekNumberInput.value = latestWeekTitle ? parseInt(latestWeekTitle.innerText.slice(6)) + 1 : getWeekNumber(new Date());
 });
 
-function addTable() {
+function getFullWeekTable() {
+    const weekTable = getEmptyWeekTable();
+    const gridSection = weekTable.querySelector('.grid');
+    gridSection.appendChild(getDaySection('monday'));
+    gridSection.appendChild(getDaySection('tuesday'));
+    gridSection.appendChild(getDaySection('wednesday'));
+    gridSection.appendChild(getDaySection('thursday'));
+    gridSection.appendChild(getDaySection('friday'));
+
+    return weekTable;
+}
+
+function getDaySection(dayName) {
+    const dayNamesSwedish = {
+        monday: 'Måndag',
+        tuesday: 'Tisdag',
+        wednesday: 'Onsdag',
+        thursday: 'Torsdag',
+        friday: 'Fredag'
+    };
+
+    const dayNameSwedish = dayNamesSwedish[dayName];
+
+    const daySection = document.createElement('section');
+    daySection.classList.add(dayName);
+    daySection.innerHTML = `
+        <h3>${dayNameSwedish}</h3>
+        <input type="time"  />
+        <input type="time"  />
+        <input type="time"  />
+        <input type="time"  />
+        <p class="sum"></p>
+        <p class="sum-number"></p>
+    `
+    return daySection;
+}
+
+function getEmptyWeekTable() {
+    const weekTable = document.createElement('section');
+    weekTable.classList.add('week-table');
+
+    const gridSection = document.createElement('section');
+    gridSection.classList.add('grid');
+
+    const sumSection = document.createElement('section');
+    sumSection.classList.add('sum-section');
+    sumSection.innerHTML = `
+        <p class="sum"></p>
+        <p class="flex"></p>
+        `;
+    
+    weekTable.appendChild(gridSection);
+    weekTable.appendChild(sumSection);
+
+    return weekTable;
+}
+
+function addTableToWeekTableSection(table, weekNumber) {
     const weekTablesSection = document.querySelector('.week-tables');
-    const weekNumberInput = document.querySelector('.week-number')
-    weekNumberInput.insertAdjacentHTML('afterend', tabellTemplate)
-    const tabell = document.querySelector('.ny-tabell-ta-bort')
-    tabell.classList.remove('ny-tabell-ta-bort')
-    const inputFields = tabell.querySelectorAll('input[type="time"]');
+
+    const inputFields = table.querySelectorAll('input[type="time"]');
     addTableInputListeners(inputFields);
     const removeButton = createRemoveButton();
 
     const weekHeading = document.createElement('h2');
-    weekHeading.innerText = "Vecka " + weekNumberInput.value++;
+    weekHeading.innerText = "Vecka " + weekNumber;
     weekHeading.classList.add('week-title')
-    tabell.prepend(removeButton);
-    tabell.prepend(weekHeading);
-    weekTablesSection.prepend(tabell)
+    table.prepend(removeButton);
+    table.prepend(weekHeading);
+    weekTablesSection.prepend(table)
 }
 
 function loadWeekTablesFromLocalStorage() {
@@ -66,8 +120,7 @@ function renderWeekTables() {
     if (!savedWeekTables) return;
     
     savedWeekTables.tables.forEach(week => {
-        const weekContainer = document.createElement('section');
-        weekContainer.className = 'week-table';
+        const weekTable = getFullWeekTable();
 
         const weekNumber = document.createElement('h2');
         weekNumber.classList.add('week-title')
@@ -75,27 +128,18 @@ function renderWeekTables() {
 
         const removeButton = createRemoveButton();
 
-        const gridSection = document.createElement('section');
-        gridSection.className = 'grid';
-        
         Object.keys(week).forEach(day => {
             if (day === 'week') return;
-            const dayHtml = createDayHtml(day, week[day]);
-            gridSection.innerHTML += dayHtml;
+            const daySection = Array.from(weekTable.querySelectorAll(`.${day} input[type="time"]`))
+            daySection.forEach((inputField, index) => {
+                inputField.value = week[day][index];
+              });
         });
 
-        const sumSection = document.createElement('section');
-        sumSection.className = 'sum-section';
-        sumSection.innerHTML = `
-        <p class="sum"></p>
-        <p class="flex"></p>
-        `;
-        weekContainer.appendChild(weekNumber);
-        weekContainer.appendChild(removeButton);
-        weekContainer.appendChild(gridSection);
-        weekContainer.appendChild(sumSection);
+        weekTable.prepend(removeButton);
+        weekTable.prepend(weekNumber);
         
-        weekTablesSection.appendChild(weekContainer);
+        weekTablesSection.appendChild(weekTable);
     });
 }
 
