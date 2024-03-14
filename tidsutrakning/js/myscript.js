@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     inputFields.forEach(calculateTime);
     inputFields.forEach(calculateWeekTime);
     const button = document.querySelector('button');
+    button.classList.add('button-17')
     const weekNumberInput = document.querySelector('.week-number')
 
     button.addEventListener('click', addTable);
@@ -97,6 +98,7 @@ function createRemoveButton() {
     const removeButton = document.createElement('button');
     removeButton.innerText = "Ta bort vecka"
     removeButton.classList.add('remove-week-btn')
+    removeButton.classList.add('button-17')
     removeButton.addEventListener('click', removeParentDiv);
 
     return removeButton;

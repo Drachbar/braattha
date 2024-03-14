@@ -1,0 +1,31 @@
+body {
+  background-color: rgb(36, 54, 54);
+  color: wheat;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.week-table {
+  margin: 1rem;
+  padding: 1rem;
+  border: 3px solid rgb(18, 27, 27);;
+  border-radius: 1rem;
+  width: 400px;
+}
+
+.week-title {
+  text-align: center;
+}
+

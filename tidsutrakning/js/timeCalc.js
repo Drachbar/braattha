@@ -30,7 +30,7 @@ function calculateWeekTime(inputField) {
         return !isNaN(value) ? acc + value : acc;
     }, 0)
 
-    if (sum !== 0) sumElement.innerText = sum;
+    if (sum !== 0) sumElement.innerText = "Summa: " + sum;
 }
 
 function elementsHasEmptyValue(elements) {
