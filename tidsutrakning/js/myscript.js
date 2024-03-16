@@ -96,7 +96,7 @@ function addTableToWeekTableSection(table, weekNumber, year) {
     Array.from(table.querySelectorAll('.grid section h3')).forEach((day, index) => {
         const date = getDateRangeOfWeek(weekNumber, year)[index]
         const dateElement = document.createElement('span');
-        dateElement.innerText = date.getDate() + "/" + date.getMonth() + 1
+        dateElement.innerText = date.getDate() + "/" + (date.getMonth() + 1)
         day.parentNode.insertBefore(dateElement, day.nextSibling);
     })
 
