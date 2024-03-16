@@ -8,12 +8,17 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const button = document.querySelector('button');
     button.classList.add('button-17')
     const weekNumberInput = document.querySelector('.week-number')
-
-    button.addEventListener('click', () => addTableToWeekTableSection(getFullWeekTable(), weekNumberInput.value++));
-    addTableInputListeners(inputFields);
-
+    const yearInput = document.querySelector('.year-input')
+    yearInput.value = new Date().getFullYear()
+    
     const latestWeekTitle = document.querySelector('.week-title');
     weekNumberInput.value = latestWeekTitle ? parseInt(latestWeekTitle.innerText.slice(6)) + 1 : getWeekNumber(new Date());
+
+    button.addEventListener('click', () => {
+        addTableToWeekTableSection(getFullWeekTable(), weekNumberInput.value++, yearInput.value);
+    });
+    addTableInputListeners(inputFields);
+
 });
 
 function getFullWeekTable() {
@@ -73,18 +78,34 @@ function getEmptyWeekTable() {
     return weekTable;
 }
 
-function addTableToWeekTableSection(table, weekNumber) {
+function addTableToWeekTableSection(table, weekNumber, year) {
     const weekTablesSection = document.querySelector('.week-tables');
 
     const inputFields = table.querySelectorAll('input[type="time"]');
     addTableInputListeners(inputFields);
     const removeButton = createRemoveButton();
 
+    const yearElement = document.createElement('span')
+    yearElement.classList.add('week-year')
+    yearElement.innerText = year;
+
     const weekHeading = document.createElement('h2');
     weekHeading.innerText = "Vecka " + weekNumber;
     weekHeading.classList.add('week-title')
+
+    Array.from(table.querySelectorAll('.grid section h3')).forEach((day, index) => {
+        const date = getDateRangeOfWeek(weekNumber, year)[index]
+        const dateElement = document.createElement('span');
+        dateElement.innerText = date.getDate() + "/" + date.getMonth() + 1
+        day.parentNode.insertBefore(dateElement, day.nextSibling);
+    })
+
+    const headerElement = document.createElement('section');
+    headerElement.classList.add('week-header')
+    headerElement.appendChild(yearElement);
+    headerElement.appendChild(weekHeading);
     table.prepend(removeButton);
-    table.prepend(weekHeading);
+    table.prepend(headerElement);
     weekTablesSection.prepend(table)
 }
 
@@ -126,6 +147,10 @@ function renderWeekTables() {
         weekNumber.classList.add('week-title')
         weekNumber.innerText = "Vecka " + week.week;
 
+        const yearElement = document.createElement('span')
+        yearElement.classList.add('week-year')
+        yearElement.innerText = week.year;
+
         const removeButton = createRemoveButton();
 
         Object.keys(week).forEach(day => {
@@ -136,8 +161,13 @@ function renderWeekTables() {
               });
         });
 
+        const headerElement = document.createElement('section');
+        headerElement.classList.add('week-header')
+        headerElement.appendChild(yearElement);
+        headerElement.appendChild(weekNumber);
+
         weekTable.prepend(removeButton);
-        weekTable.prepend(weekNumber);
+        weekTable.prepend(headerElement);
         
         weekTablesSection.appendChild(weekTable);
     });
@@ -158,6 +188,9 @@ function saveWeekTablesToLocalStorage() {
 
     const savedTables = Array.from(tables).map(table => {
         const weekNumber = table.querySelector('.week-title').textContent.slice(6);
+        const year = table.querySelector('.week-year').textContent
+
+        console.log(year)
         const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
         const savedDays = daysOfWeek.reduce((saved, day) => {
@@ -166,7 +199,7 @@ function saveWeekTablesToLocalStorage() {
             return {...saved, [day]: times};
         }, {});
 
-        return { week: weekNumber, ...savedDays };
+        return { week: weekNumber, year: year, ...savedDays };
     });
 
     localStorage.setItem('savedWeeks', JSON.stringify({tables: savedTables}));

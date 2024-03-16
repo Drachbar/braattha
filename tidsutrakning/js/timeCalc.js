@@ -33,10 +33,6 @@ function calculateWeekTime(inputField) {
     flexElement.innerText = "Flex: " + (sum - 40)
 }
 
-function calculateFlex() {
-
-}
-
 function elementsHasEmptyValue(elements) {
     return elements.some(element => element.value === "")
 }
@@ -70,4 +66,25 @@ function getWeekNumber(d) {
     // Beräknar veckonumret
     var weekNo = Math.ceil(( ( (d - yearStart) / 86400000) + 1)/7);
     return weekNo;
+}
+
+function getDateRangeOfWeek(weekNo, year) {
+    var d = new Date("Jan 01, " + year + " 01:00:00");
+    var dayMs = 86400000; // Millisekunder per dag
+    var dayNum = d.getDay(); // Veckodagen för 1 jan (0-6)
+    var requiredDate = d; // Startdatumet vi kommer att justera
+
+    // Justera till första torsdagen i året
+    requiredDate = new Date(d.getTime() + ((4 - dayNum) * dayMs));
+    // Beräkna startdatumet för veckan
+    requiredDate = new Date(requiredDate.getTime() + ((weekNo - 1) * 7 * dayMs));
+
+    // Justera till måndag i den valda veckan
+    requiredDate = new Date(requiredDate.getTime() - ((requiredDate.getDay() || 7) - 1) * dayMs);
+
+    var dates = [];
+    for (var i = 0; i < 7; i++) {
+        dates.push(new Date(requiredDate.getTime() + (i * dayMs)));
+    }
+    return dates;
 }

@@ -12,6 +12,11 @@ h2 {
   font-size: 1.25rem;
 }
 
+.week-header {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .week-tables {
   display: flex;
   flex-wrap: wrap;
