@@ -80,7 +80,7 @@ function getGridSection(weekNumber, year) {
     const gridSection = document.createElement('section');
     gridSection.classList.add('grid');
 
-    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
     days.forEach(day => gridSection.appendChild(getDaySection(day)));
 
     Array.from(gridSection.querySelectorAll('h3')).forEach((day, index) => {
@@ -118,7 +118,9 @@ function getDaySection(dayName) {
         tuesday: 'Tisdag',
         wednesday: 'Onsdag',
         thursday: 'Torsdag',
-        friday: 'Fredag'
+        friday: 'Fredag',
+        saturday: 'Lördag',
+        sunday: 'Söndag'
     };
 
     const dayNameSwedish = dayNamesSwedish[dayName];
@@ -181,7 +183,7 @@ function saveWeekTablesToLocalStorage() {
         const weekNumber = table.querySelector('.week-title').textContent.slice(6);
         const year = table.querySelector('.week-year').textContent
 
-        const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+        const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
         const savedDays = daysOfWeek.reduce((saved, day) => {
             const inputs = table.querySelectorAll(`.${day} input[type="time"]`);
