@@ -56,6 +56,16 @@ function adjustTime(hours, minutes) {
     return { hours: adjustedHours, minutes: adjustedMinutes };
 }
 
+function incrementWeek(weekNoElement, yearElement) {
+    weekNoElement.value++;
+    const nextWeek = getDateRangeOfWeek(weekNoElement.value, yearElement.value);
+
+    if (nextWeek[4].getFullYear() > parseInt(yearElement.value)) {
+        weekNoElement.value = 1;
+        yearElement.value++;
+    }
+}
+
 function getWeekNumber(d) {
     // Kopierar datumet för att undvika att ändra på originaldatumet
     d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));

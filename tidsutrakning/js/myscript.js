@@ -13,13 +13,14 @@ function initializePage() {
     renderPage(weekTablesSection);
     initializeYearInput(yearInput);
     const latestWeekTitle = document.querySelector('.week-title');
-    initializeWeekNumberInput(latestWeekTitle, weekNumberInput);
+    initializeWeekNumberInput(latestWeekTitle, weekNumberInput, yearInput);
     changeWeekInterval();
 }
 
 function initializeListeners(button, weekTablesSection, weekNumberInput, yearInput) {
     button.addEventListener('click', () => {
-        weekTablesSection.prepend(getWeekTable(weekNumberInput.value++, yearInput.value));
+        weekTablesSection.prepend(getWeekTable(weekNumberInput.value, yearInput.value));
+        incrementWeek(weekNumberInput, yearInput);
         changeWeekInterval();
     });
     onInputChange([weekNumberInput, yearInput], changeWeekInterval);
@@ -37,13 +38,19 @@ function initializeYearInput(yearInput) {
     yearInput.value = new Date().getFullYear();
 }
 
-function initializeWeekNumberInput(latestWeekTitle, weekNumberInput) {
-    weekNumberInput.value = latestWeekTitle ?
-        parseInt(latestWeekTitle.innerText.slice(6)) + 1 : getWeekNumber(new Date());
+function initializeWeekNumberInput(latestWeekTitle, weekNumberInput, yearElement) {
+    if (latestWeekTitle) {
+        const latestWeek = latestWeekTitle.innerText.slice(6);
+        weekNumberInput.value = latestWeek;
+        incrementWeek(weekNumberInput, yearElement)
+    } else {
+        weekNumberInput.value = getWeekNumber(new Date());
+    }
 }
 
 function renderPage(weekTablesSection) {
     const weekTables = loadWeekTablesFromLocalStorage();
+    if (weekTables === undefined) return;
     weekTables.forEach(weekTable => {
         weekTablesSection.appendChild(weekTable);
         const inputFields = Array.from(weekTable.querySelectorAll('input[type="time"]'));
