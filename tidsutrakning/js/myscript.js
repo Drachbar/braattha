@@ -3,8 +3,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initializePage() {
-    const weekNumberInput = document.querySelector('.week-number');
-    const yearInput = document.querySelector('.year-input');
+    const weekNumberInput = document.getElementById('week-number');
+    const yearInput = document.getElementById('year-input');
     const weekTablesSection = document.querySelector('.week-tables');
     const button = document.querySelector('button');
     
@@ -14,24 +14,24 @@ function initializePage() {
     initializeYearInput(yearInput);
     const latestWeekTitle = document.querySelector('.week-title');
     initializeWeekNumberInput(latestWeekTitle, weekNumberInput, yearInput);
-    changeWeekInterval();
+    changeWeekInterval(weekNumberInput, yearInput);
 }
 
 function initializeListeners(button, weekTablesSection, weekNumberInput, yearInput) {
     button.addEventListener('click', () => {
         weekTablesSection.prepend(getWeekTable(weekNumberInput.value, yearInput.value));
         incrementWeek(weekNumberInput, yearInput);
-        changeWeekInterval();
+        changeWeekInterval(weekNumberInput, yearInput);
     });
     onInputChange([weekNumberInput, yearInput], changeWeekInterval);
 }
 
 function changeWeekInterval() {
-    mySpan = document.querySelector('.vecko-intervall')
-    const weekNumberInput = document.querySelector('.week-number');
-    const yearInput = document.querySelector('.year-input');
+    const weekInterval = document.querySelector('.vecko-intervall')
+    const weekNumberInput = document.getElementById('week-number');
+    const yearInput = document.getElementById('year-input');
     const dateRange = getDateRangeOfWeek(weekNumberInput.value, yearInput.value)
-    mySpan.innerText = dateRange[0].toLocaleDateString() + " - " + dateRange[6].toLocaleDateString()
+    weekInterval.innerText = dateRange[0].toLocaleDateString() + " - " + dateRange[6].toLocaleDateString()
 }
 
 function initializeYearInput(yearInput) {
