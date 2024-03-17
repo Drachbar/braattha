@@ -60,7 +60,7 @@ function incrementWeek(weekNoElement, yearElement) {
     weekNoElement.value++;
     const nextWeek = getDateRangeOfWeek(weekNoElement.value, yearElement.value);
 
-    if (nextWeek[4].getFullYear() > parseInt(yearElement.value)) {
+    if (nextWeek[3].getFullYear() > parseInt(yearElement.value)) {
         weekNoElement.value = 1;
         yearElement.value++;
     }
