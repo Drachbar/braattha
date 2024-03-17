@@ -85,7 +85,7 @@ function getGridSection(weekNumber, year) {
 
     Array.from(gridSection.querySelectorAll('h3')).forEach((day, index) => {
         const date = getDateRangeOfWeek(weekNumber, year)[index]
-        const dateElement = document.createElement('span');
+        const dateElement = document.createElement('div');
         dateElement.innerText = date.getDate() + "/" + (date.getMonth() + 1)
         day.parentNode.insertBefore(dateElement, day.nextSibling);
     })
