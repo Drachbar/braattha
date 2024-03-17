@@ -6,6 +6,7 @@ body {
 
 h1 {
   font-size: 1.5rem;
+  text-align: center;
 }
 
 h2 {
@@ -47,4 +48,40 @@ h2 {
 
 .saturday h3, .sunday h3 {
   color: rgb(197, 97, 97);
+}
+
+.add-week-section {
+  display: flex;
+  align-items: center;
+  width: fit-content; 
+  margin: 2rem auto;
+}
+
+.add-week-input-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-week-section button {
+  margin-right: 2rem;
+}
+
+.add-week-section span {
+  margin-left: 2rem;
+}
+
+.add-week-input-section div {
+  display: flex;
+  align-items: center;
+}
+
+.add-week-input-section div label {
+  text-align: end;
+  width: 50px;
+  margin-right: 5px;
+}
+
+.add-week-input-section input {
+  margin-left: 1rem;
+  width: 50px;
 }
