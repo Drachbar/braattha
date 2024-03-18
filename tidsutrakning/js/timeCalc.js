@@ -79,22 +79,22 @@ function getWeekNumber(d) {
 }
 
 function getDateRangeOfWeek(weekNo, year) {
-    var d = new Date("Jan 01, " + year + " 01:00:00");
-    var dayMs = 86400000; // Millisekunder per dag
-    var dayNum = d.getDay(); // Veckodagen för 1 jan (0-6)
-    var requiredDate = d; // Startdatumet vi kommer att justera
+    const janFirst = new Date(year, 0, 1);
+    const days = (weekNo - 1) * 7; // Dagar att lägga till baserat på veckonummer
+    const dayOfWeek = janFirst.getDay(); // Veckodagen för 1 jan (0-6, där 0 är söndag)
+    let startDay;
 
-    // Justera till första torsdagen i året
-    requiredDate = new Date(d.getTime() + ((4 - dayNum) * dayMs));
-    // Beräkna startdatumet för veckan
-    requiredDate = new Date(requiredDate.getTime() + ((weekNo - 1) * 7 * dayMs));
-
-    // Justera till måndag i den valda veckan
-    requiredDate = new Date(requiredDate.getTime() - ((requiredDate.getDay() || 7) - 1) * dayMs);
-
-    var dates = [];
+    // Om 1 jan är torsdag eller tidigare, börjar veckan denna vecka
+    if(dayOfWeek <= 4) {
+        startDay = janFirst.getDate() - janFirst.getDay() + 1;
+    } else {
+        // Om 1 jan är fredag eller senare, börjar nästa vecka räknas som första veckan
+        startDay = janFirst.getDate() - janFirst.getDay() + 8;
+    }
+    const weekStart = new Date(year, 0, startDay + days);
+    const dates = [];
     for (var i = 0; i < 7; i++) {
-        dates.push(new Date(requiredDate.getTime() + (i * dayMs)));
+        dates.push(new Date(weekStart.getTime() + (i * 86400000)));
     }
     return dates;
 }

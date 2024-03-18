@@ -11,7 +11,8 @@ function initializePage() {
     initializeListeners(button, weekTablesSection, weekNumberInput, yearInput);
     
     renderPage(weekTablesSection);
-    initializeYearInput(yearInput);
+    const latestYear = document.querySelector('.week-year')
+    initializeYearInput(yearInput, latestYear);
     const latestWeekTitle = document.querySelector('.week-title');
     initializeWeekNumberInput(latestWeekTitle, weekNumberInput, yearInput);
     changeWeekInterval(weekNumberInput, yearInput);
@@ -34,7 +35,11 @@ function changeWeekInterval() {
     weekInterval.innerText = dateRange[0].toLocaleDateString() + " - " + dateRange[6].toLocaleDateString()
 }
 
-function initializeYearInput(yearInput) {
+function initializeYearInput(yearInput, latestYear) {
+    if (latestYear) {
+        yearInput.value = latestYear.innerText;
+        return;
+    }
     yearInput.value = new Date().getFullYear();
 }
 
