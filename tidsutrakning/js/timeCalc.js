@@ -104,6 +104,8 @@ function isHoliday(dateToCheck) {
         return true;
     }
 
+    if (isKristiHimmelsfardsDay(dateToCheck)) return true;
+    if (isMidsummerEve(dateToCheck)) return true;
     if (isEasterHoliday(dateToCheck)) return true;
 
     const manad = dateToCheck.getMonth() + 1;
