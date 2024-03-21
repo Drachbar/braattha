@@ -29,8 +29,11 @@ function calculateWeekTime(inputField) {
         return !isNaN(value) ? acc + value : acc;
     }, 0)
 
+    // 8 timmar varje dag minus alla helgdagar
+    const normaltimmar = 8 * 7 - gridSection.querySelectorAll('.holiday').length * 8;
+
     if (sum !== 0) sumElement.innerText = "Summa: " + sum;
-    flexElement.innerText = "Flex: " + (sum - 40)
+    flexElement.innerText = "Flex: " + (sum - normaltimmar)
 }
 
 function elementsHasEmptyValue(elements) {
