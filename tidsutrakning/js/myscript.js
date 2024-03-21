@@ -99,6 +99,9 @@ function getGridSection(weekNumber, year) {
         const date = getDateRangeOfWeek(weekNumber, year)[index]
         const dateElement = document.createElement('div');
         dateElement.innerText = date.getDate() + "/" + (date.getMonth() + 1)
+        if (isHoliday(date)) {
+            day.classList.add('holiday')
+        }
         day.parentNode.insertBefore(dateElement, day.nextSibling);
     })
 

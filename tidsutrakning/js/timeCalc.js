@@ -98,3 +98,16 @@ function getDateRangeOfWeek(weekNo, year) {
     }
     return dates;
 }
+
+function isHoliday(dateToCheck) {
+    if (dateToCheck.getUTCDay() >= 5 ) {
+        return true;
+    }
+
+    if (isEasterHoliday(dateToCheck)) return true;
+
+    const manad = dateToCheck.getMonth() + 1;
+    const dag = dateToCheck.getDate();
+    const nyckel = `${manad}-${dag}`;
+    return rodaDagar.has(nyckel);
+}
