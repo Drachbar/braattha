@@ -9,6 +9,75 @@ const rodaDagar = new Map([
     ['12-31', 'Nyårsafton'],
 ]);
 
+const daysOff = new Map([
+    ['Nyårsdagen', true],
+    ['Trettondedag jul', true],
+    ['Skärtorsdag', false],
+    ['Långfredagen', true],
+    ['Påskafton', true],
+    ['Påskdagen', true],
+    ['Annandag påsk', true],
+    ['Första maj', true],
+    ['Kristi Himmelsfärdsdag', true],
+    ['Pingstdagen', false],
+    ['Annandag pingst', false],
+    ['Sveriges nationaldag', true],
+    ['Midsommarafton', true],
+    ['Midsommardagen', true],
+    ['Alla helgons dag', true],
+    ['Julafton', true],
+    ['Juldagen', true],
+    ['Annandag jul', true],
+    ['Nyårsafton', true],
+])
+
+function getAllHolidays(year) {
+    const tempHolidays = [
+        ...Array.from(rodaDagar.keys()).map(key => {
+            const [month, day] = key.split('-').map(Number);
+            return { date: new Date(year, month - 1, day), name: rodaDagar.get(key) };
+        }),
+        { date: getEasterDate(year), name: 'Påskdagen' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() - 3), name: 'Skärtorsdag' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() - 2), name: 'Långfredagen' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() - 1), name: 'Påskafton' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() + 1), name: 'Annandag påsk' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() + 39), name: 'Kristi Himmelsfärdsdag' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() + 49), name: 'Pingstdagen' },
+        { date: new Date(year, getEasterDate(year).getMonth(), getEasterDate(year).getDate() + 50), name: 'Annandag pingst' },
+        { date: new Date(year, calculateMidsummerEve(year).getMonth(), calculateMidsummerEve(year).getDate() +1), name: 'Midsommardagen' },
+        { date: calculateAllSaintsDay(year), name: 'Alla helgons dag' },
+        { date: calculateMidsummerEve(year), name: 'Midsommarafton' },
+    ];
+
+    tempHolidays.sort((a, b) => a.date - b.date);
+
+    const holidaysMap = new Map(
+        tempHolidays.map(({ date, name }) => [`${date.getMonth() + 1}-${date.getDate()}`, name])
+    );
+
+    return holidaysMap;
+}
+
+function calculateAllSaintsDay(year) {
+    // Startar med den 31 oktober
+    let date = new Date(year, 9, 31); // Oktober är månad 9 (0-baserat)
+    // Om den 31 oktober är en lördag, är det Alla helgons dag
+    if (date.getDay() === 6) {
+        return date;
+    }
+    // Annars, hitta den första lördagen efter den 31 oktober
+    let offset = (6 - date.getDay() + 7) % 7;
+    date.setDate(date.getDate() + offset);
+    return date;
+}
+
+function calculateMidsummerEve(year) {
+    const dateOf19th = new Date(year, 5, 19); // Juni månad är index 5
+    const offset = (5 - dateOf19th.getDay() + 7) % 7;
+    return new Date(year, 5, 19 + offset);
+}
+
 function isEasterHoliday(dateToCheck) {
     // Kontrollera endast torsdag och söndag
     const UTCDay = dateToCheck.getUTCDay();

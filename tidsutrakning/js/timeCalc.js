@@ -103,16 +103,15 @@ function getDateRangeOfWeek(weekNo, year) {
 }
 
 function isHoliday(dateToCheck) {
-    if (dateToCheck.getUTCDay() >= 5 ) {
-        return true;
-    }
+    if (dateToCheck.getUTCDay() >= 5) return true;
 
-    if (isKristiHimmelsfardsDay(dateToCheck)) return true;
-    if (isMidsummerEve(dateToCheck)) return true;
-    if (isEasterHoliday(dateToCheck)) return true;
+    const yearService = YearService.getInstance();
 
-    const manad = dateToCheck.getMonth() + 1;
-    const dag = dateToCheck.getDate();
-    const nyckel = `${manad}-${dag}`;
-    return rodaDagar.has(nyckel);
+    const holidays = yearService.getOrCreateYearObject(dateToCheck.getFullYear())
+
+    const key = (dateToCheck.getMonth() + 1) + '-' + dateToCheck.getDate();
+    const holiday = holidays.get(key)
+
+    if (holiday === undefined) return false;
+    return(daysOff.get(holiday));
 }
