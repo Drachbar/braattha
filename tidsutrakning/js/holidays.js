@@ -53,7 +53,7 @@ function getAllHolidays(year) {
     tempHolidays.sort((a, b) => a.date - b.date);
 
     const holidaysMap = new Map(
-        tempHolidays.map(({ date, name }) => [`${date.getMonth() + 1}-${date.getDate()}`, name])
+        tempHolidays.map(({ date, name }) => [date.getTime(), name])
     );
 
     return holidaysMap;

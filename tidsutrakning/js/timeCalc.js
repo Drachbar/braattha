@@ -106,12 +106,8 @@ function isHoliday(dateToCheck) {
     if (dateToCheck.getUTCDay() >= 5) return true;
 
     const yearService = YearService.getInstance();
-
-    const holidays = yearService.getOrCreateYearObject(dateToCheck.getFullYear())
-
-    const key = (dateToCheck.getMonth() + 1) + '-' + dateToCheck.getDate();
-    const holiday = holidays.get(key)
-
+    const holidays = yearService.getOrCreateHolidayObject(dateToCheck.getFullYear())
+    const holiday = holidays.get(dateToCheck.getTime())
     if (holiday === undefined) return false;
     return(daysOff.get(holiday));
 }

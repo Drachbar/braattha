@@ -7,7 +7,7 @@ class YearService {
         return YearService.instance;
     }
 
-    getOrCreateYearObject(year) {
+    getOrCreateHolidayObject(year) {
         if (this.yearMap.has(year)) {
             return this.yearMap.get(year);
         }
